@@ -2,6 +2,8 @@
 
 Ableton Live API written in Node, using the awesome project [Max4Node](https://github.com/alpacaaa/max4node)
 
+**Notice** that this API is under development and more features will come as time goes
+
 ## Requirements
 
 - Ableton Live
