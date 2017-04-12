@@ -1,4 +1,28 @@
 {
+  "name": "abletonapi",
+  "description": "Ableton Live API written in Node, using the awesome project [Max4Node](https://github.com/alpacaaa/max4node)",
+  "version": "0.0.1",
+  "main": "abletonapi.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "none"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LeMansHack/AbletonAPI.git"
+  },
+  "keywords": [
+    "ableton",
+    "live",
+    "max4live",
+    "ableton"
+  ],
+  "author": "Kasper Baaøgø Jensen (kasper@kasperbaago.dk)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LeMansHack/AbletonAPI/issues"
+  },
+  "homepage": "https://github.com/LeMansHack/AbletonAPI#readme",
   "dependencies": {
     "max4node": "^0.1.2"
   }
