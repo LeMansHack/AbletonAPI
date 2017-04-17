@@ -18,7 +18,14 @@ Ableton Live API written in Node, using the awesome project [Max4Node](https://g
 
 ## Methods
 
-### playScene(scene)
+### Scenes
+
+#### getScenes()
+
+Returns a `Promise` with an array containing scene data from the Ableton Live.
+Current data is `name` and `color`. 
+
+#### playScene(scene)
 
 Fires a scene in Ableton Live
 
@@ -26,7 +33,23 @@ Parameters:
 
 - `Scene` - Index of scene to play 
 
-### getMaxData(method, path, property)
+### Song Tempo
+
+#### getTempo()
+
+Returns a `Promise` with the current song tempo in BPM
+
+#### setTempo(tempo)
+
+Sets the current song tempo in BPM
+
+Paramters:
+
+- `Tempo` - BPM tempo to set
+
+### Max data
+
+#### getMaxData(method, path, property)
 
 Returns a `Promise` with value from request - please see the [The Live Object Model](https://docs.cycling74.com/max7/vignettes/live_object_model) for more more info.
 
@@ -36,7 +59,7 @@ Parameters:
 - `Path` - The max for live path according the [LOM](https://docs.cycling74.com/max7/vignettes/live_object_model) ex `live_set scenes`
 - `Property` - The property you want to get ex `ClipSlots`
 
-### setMaxData(path, property,  value)
+#### setMaxData(path, property,  value)
 
 Sets a property value in Ableton by the Live Object Model path
 
@@ -46,30 +69,13 @@ Parameters
 - `Property` - The property to set on the object
 - `Value` - The value to set the property to
 
-### fireMaxData(path)
+#### fireMaxData(path)
 
 Make it possible to call an fire event on an object given by the Live Object Model
 
 Parameters:
 
 - `Path`- The Live Object Model path to call an fire event on
-
-### getScenes()
-
-Returns a `Promise` with an array containing scene data from the Ableton Live.
-Current data is `name` and `color`. 
-
-### getTempo()
-
-Returns a `Promise` with the current song tempo in BPM
-
-### setTempo(tempo)
-
-Sets the current song tempo in BPM
-
-Paramters:
-
-- `Tempo` - BPM tempo to set
 
 ## Examples
 
