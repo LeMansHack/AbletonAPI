@@ -70,34 +70,49 @@ class AbletonAPI {
     }
 
     /**
+     * Retruns an array with object data from Ableton
+     * @param path
+     * @param property
+     * @param valuesToGet
+     * @returns {Promise.<TResult>}
+     */
+    getMaxList(path, property, valuesToGet) {
+        return this.getMaxData('count', path, property)
+            .then((count) => {
+                return new Promise((resolve, reject) => {
+                    let data = [ ];
+                    let promises = [ ];
+                    for(let i = 0; i<count; i++) {
+                        promises[i] = new Promise((resolve, reject) => {
+                            let subpath = path + ' ' + property + ' ' + i;
+                            let subpromises = [ ];
+                            for(let y in valuesToGet) {
+                                subpromises.push(this.getMaxData('get', subpath, valuesToGet[y]));
+                            }
+
+                            Promise.all(subpromises).then((values) => {
+                                data[i] = { };
+                                data[i].id = i;
+                                for(let z in values) {
+                                    data[i][valuesToGet[z]] = values[z];
+                                }
+                                resolve();
+                            })
+                        });
+                    }
+                    Promise.all(promises).then(() => {
+                        resolve(data);
+                    });
+                });
+            });
+    };
+
+    /**
      * Returns list of scenes in Ableton live with name and color
      * @returns {Promise.<TResult>}
      */
     getScenes() {
-        return this.getMaxData('count', 'live_set', 'scenes')
-            .then((count) => {
-               return new Promise((resolve, reject) => {
-                   let scenes = [ ];
-                   let promises = [ ];
-                   for(let i = 0; i<count; i++) {
-                       promises[i] = new Promise((resolve, reject) => {
-                           let path = 'live_set scenes ' + i;
-                           let name = this.getMaxData('get', path, 'name');
-                           let color = this.getMaxData('get', path, 'color');
-                           Promise.all([name, color]).then((values) => {
-                               scenes[i] = {
-                                   name: values[0],
-                                   color: values[1]
-                               };
-                               resolve();
-                           })
-                       });
-                   }
-                   Promise.all(promises).then(() => {
-                       resolve(scenes);
-                   });
-               });
-            });
+        return this.getMaxList('live_set', 'scenes', ['name', 'color']);
     }
 
     /**
@@ -114,6 +129,14 @@ class AbletonAPI {
      */
     setTempo(tempo) {
         this.setMaxData('live_set master_track mixer_device song_tempo', 'value', tempo);
+    }
+
+    /**
+     * Retruns list of all tracks
+     * @returns {Promise.<TResult>}
+     */
+    getTracks() {
+        return this.getMaxList('live_set', 'tracks', ['name']);
     }
 }
 

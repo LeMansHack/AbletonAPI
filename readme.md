@@ -33,6 +33,12 @@ Parameters:
 
 - `Scene` - Index of scene to play 
 
+### Tracks
+
+#### getTracks()
+
+Returns a `Promise` with the of tracks from Ableton Live
+
 ### Song Tempo
 
 #### getTempo()
@@ -76,6 +82,16 @@ Make it possible to call an fire event on an object given by the Live Object Mod
 Parameters:
 
 - `Path`- The Live Object Model path to call an fire event on
+
+#### getMaxList(path, property, valuesToGet) 
+
+Returns an array of objects with values given by the `valuesToGet` parameter
+
+Paameters:
+
+- `Path` - The Live Object Model path
+- `Property` - The property to return the list data from
+- `valuesToGet` - An array containing the name of the values to get from the Live Object Model
 
 ## Examples
 
