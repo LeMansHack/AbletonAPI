@@ -11,12 +11,16 @@ class AbletonAPI {
      * @param scene
      */
     playScene(scene) {
-        this.max.call({
-            path: 'live_set scenes ' + scene,
-            method: 'fire'
-        });
+        this.fireMaxData('live_set scenes ' + scene);
     }
 
+    /**
+     * Retruns max data as promise
+     * @param method
+     * @param path
+     * @param property
+     * @returns {Promise}
+     */
     getMaxData(method, path, property) {
         return new Promise((resolve, reject) => {
             let data = {
@@ -35,6 +39,33 @@ class AbletonAPI {
                     reject(null);
                     break;
             }
+        });
+    }
+
+    /**
+     * Sets max data
+     * @param path
+     * @param property
+     * @param value
+     */
+    setMaxData(path, property, value) {
+        let data = {
+            path: path,
+            property: property,
+            value: value
+        };
+
+        this.max.set(data);
+    };
+
+    /**
+     * Fires a cue or data point
+     * @param path
+     */
+    fireMaxData(path) {
+        this.max.call({
+            path: path,
+            method: 'fire'
         });
     }
 
@@ -67,6 +98,22 @@ class AbletonAPI {
                    });
                });
             });
+    }
+
+    /**
+     * Returns song tempo
+     * @returns {Promise}
+     */
+    getTempo() {
+        return this.getMaxData('get', 'live_set master_track mixer_device song_tempo', 'value');
+    }
+
+    /**
+     * Sets song tempo
+     * @param tempo
+     */
+    setTempo(tempo) {
+        this.setMaxData('live_set master_track mixer_device song_tempo', 'value', tempo);
     }
 }
 

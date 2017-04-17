@@ -36,10 +36,40 @@ Parameters:
 - `Path` - The max for live path according the [LOM](https://docs.cycling74.com/max7/vignettes/live_object_model) ex `live_set scenes`
 - `Property` - The property you want to get ex `ClipSlots`
 
+### setMaxData(path, property,  value)
+
+Sets a property value in Ableton by the Live Object Model path
+
+Parameters
+
+- `Path` - Live Object Model path
+- `Property` - The property to set on the object
+- `Value` - The value to set the property to
+
+### fireMaxData(path)
+
+Make it possible to call an fire event on an object given by the Live Object Model
+
+Parameters:
+
+- `Path`- The Live Object Model path to call an fire event on
+
 ### getScenes()
 
 Returns a `Promise` with an array containing scene data from the Ableton Live.
 Current data is `name` and `color`. 
+
+### getTempo()
+
+Returns a `Promise` with the current song tempo in BPM
+
+### setTempo(tempo)
+
+Sets the current song tempo in BPM
+
+Paramters:
+
+- `Tempo` - BPM tempo to set
 
 ## Examples
 
