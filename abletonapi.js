@@ -138,6 +138,80 @@ class AbletonAPI {
     getTracks() {
         return this.getMaxList('live_set', 'tracks', ['name']);
     }
+
+    /**
+     * Get devices for master track
+     * @returns {Promise.<TResult>}
+     */
+    getDevicesForMasterTrack() {
+        return this.getMaxList('live_set master_track', 'devices', ['name', 'type', 'class_name', 'can_have_drum_pads', 'can_have_chains'])
+            .then((devices) => {
+                return new Promise((resolve, reject) => {
+                    let promises = [ ];
+                    for(let i in devices) {
+                        promises[i] = this.getParametersForDevice('master_track', i);
+                    }
+
+                    Promise.all(promises).then((values) => {
+                        for(let y in values) {
+                            devices[y]['Parameters'] = values[y];
+                        }
+
+                        resolve(devices);
+                    });
+                });
+            });
+    }
+
+    /**
+     * Returns list of devices for track
+     * @param track
+     * @returns {Promise.<TResult>}
+     */
+    getDevicesForTrack(track) {
+        return this.getMaxList('live_set tracks ' + track, 'devices', ['name', 'type', 'class_name', 'can_have_drum_pads', 'can_have_chains'])
+            .then((devices) => {
+                return new Promise((resolve, reject) => {
+                    let promises = [ ];
+                    for(let i in devices) {
+                        promises[i] = this.getParametersForDevice('master_track', i);
+                    }
+
+                    Promise.all(promises).then((values) => {
+                        for(let y in values) {
+                            devices[y]['Parameters'] = values[y];
+                        }
+
+                        resolve(devices);
+                    });
+                });
+            });
+    }
+
+    /**
+     * Returns parameters for device or master_track
+     * @param track
+     * @param device
+     * @returns {Promise.<TResult>}
+     */
+    getParametersForDevice(track, device) {
+        let device_values = [
+            'default_value',
+            'is_enabled',
+            'is_quantized',
+            'max',
+            'min',
+            'name',
+            'original_name',
+            'value'
+        ];
+
+        if(track === 'master_track') {
+            return this.getMaxList('live_set master_track devices ' + device, 'parameters', device_values);
+        } else {
+            return this.getMaxList('live_set tracks ' + track + ' devices ' + device, 'parameters', device_values);
+        }
+    }
 }
 
 module.exports = new AbletonAPI();
