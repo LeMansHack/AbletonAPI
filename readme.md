@@ -18,6 +18,11 @@ Ableton Live API written in Node, using the awesome project [Max4Node](https://g
 
 ## Methods
 
+- [Scenes](#scenes)
+- [Tracks](#tracks)
+- [Devices](#devices)
+- [MaxData](#maxdata)
+
 ### Scenes
 
 #### getScenes()
@@ -72,7 +77,7 @@ Paramters
 - `track` - The trackID
 - device - The device id
 
-### setParameterForDevice(track, device, parameterId, value)
+#### setParameterForDevice(track, device, parameterId, value)
 
 Sets a specific parameter to the given value, on specific device. If value is lower or greater then min/max values for the given parameter, the value will be set to the lowest or highest possible parameter.
 
