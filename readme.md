@@ -21,7 +21,7 @@ Ableton Live API written in Node, using the awesome project [Max4Node](https://g
 - [Scenes](#scenes)
 - [Tracks](#tracks)
 - [Devices](#devices)
-- [MaxData](#maxdata)
+- [MaxData](#max-data)
 
 ### Scenes
 
