@@ -140,41 +140,22 @@ class AbletonAPI {
     }
 
     /**
-     * Get devices for master track
-     * @returns {Promise.<TResult>}
-     */
-    getDevicesForMasterTrack() {
-        return this.getMaxList('live_set master_track', 'devices', ['name', 'type', 'class_name', 'can_have_drum_pads', 'can_have_chains'])
-            .then((devices) => {
-                return new Promise((resolve, reject) => {
-                    let promises = [ ];
-                    for(let i in devices) {
-                        promises[i] = this.getParametersForDevice('master_track', i);
-                    }
-
-                    Promise.all(promises).then((values) => {
-                        for(let y in values) {
-                            devices[y]['Parameters'] = values[y];
-                        }
-
-                        resolve(devices);
-                    });
-                });
-            });
-    }
-
-    /**
      * Returns list of devices for track
      * @param track
      * @returns {Promise.<TResult>}
      */
     getDevicesForTrack(track) {
-        return this.getMaxList('live_set tracks ' + track, 'devices', ['name', 'type', 'class_name', 'can_have_drum_pads', 'can_have_chains'])
+        let path = 'live_set tracks ' + track;
+        if(track === 'master_track') {
+            path = 'live_set master_track';
+        }
+
+        return this.getMaxList(path, 'devices', ['name', 'type', 'class_name', 'can_have_drum_pads', 'can_have_chains'])
             .then((devices) => {
                 return new Promise((resolve, reject) => {
                     let promises = [ ];
                     for(let i in devices) {
-                        promises[i] = this.getParametersForDevice('master_track', i);
+                        promises[i] = this.getParametersForDevice(track, i);
                     }
 
                     Promise.all(promises).then((values) => {
@@ -211,6 +192,32 @@ class AbletonAPI {
         } else {
             return this.getMaxList('live_set tracks ' + track + ' devices ' + device, 'parameters', device_values);
         }
+    }
+
+    /**
+     * Sets parameter for device
+     * @param track
+     * @param device
+     * @param parameterId
+     * @param value
+     */
+    setParameterForDevice(track, device, parameterId, value) {
+        let path = '';
+        if(track === 'master_track') {
+            path = 'live_set master_track devices ' + device + ' parameters ' + parameterId;
+        } else {
+            path = 'live_set tracks ' + track + ' devices ' + device + ' parameters ' + parameterId;
+        }
+
+        Promise.all([this.getMaxData('get', path, 'min'), this.getMaxData('get', path, 'max')]).then((minMax) => {
+            if(value < minMax[0]) {
+                this.setMaxData(path, 'value', minMax[0]);
+            } else if(value > minMax[1]) {
+                this.setMaxData(path, 'value', minMax[1]);
+            } else {
+                this.setMaxData(path, 'value', value);
+            }
+        });
     }
 }
 

@@ -53,6 +53,36 @@ Paramters:
 
 - `Tempo` - BPM tempo to set
 
+### Devices
+
+#### getDevicesForTrack(track)
+
+Returns a `Promise` with a list of devices with parameters for the given track.
+
+Parameters:
+
+- `track` - The trackID
+
+#### getParametersForDevice(track, device)
+
+Return a `Promise` with device an array containing all device parameters for a single device
+
+Paramters
+
+- `track` - The trackID
+- device - The device id
+
+### setParameterForDevice(track, device, parameterId, value)
+
+Sets a specific parameter to the given value, on specific device. If value is lower or greater then min/max values for the given parameter, the value will be set to the lowest or highest possible parameter.
+
+Parameters:
+
+- `track` - The track id
+- `device` - The device id
+- `parameterId` - The parameter ID for the given parameter you want to change
+- `value` - The value you want top change the parameter to
+
 ### Max data
 
 #### getMaxData(method, path, property)
