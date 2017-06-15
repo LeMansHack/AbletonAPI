@@ -1,7 +1,7 @@
 {
   "name": "abletonapi",
   "description": "Ableton Live API written in Node, using the awesome project [Max4Node](https://github.com/alpacaaa/max4node)",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "abletonapi.js",
   "devDependencies": {},
   "scripts": {
