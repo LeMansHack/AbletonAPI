@@ -140,6 +140,55 @@ class AbletonAPI {
     }
 
     /**
+     * Returns all clips for a given track
+     * @param track
+     * @returns {Promise.<TResult>}
+     */
+    getClipsForTrack(track) {
+        let path = 'live_set tracks ' + track;
+        if(track === 'master_track') {
+            path = 'live_set master_track';
+        }
+
+        return this.getMaxList(path, 'clip_slots', ['has_clip'])
+            .then((clips) => {
+                return new Promise((resolve, reject) => {
+                    let Promises = [ ];
+                    let ClipID = [ ];
+                    for(let i in clips) {
+                        if(clips[i].has_clip) {
+                            let clipPath = path + ' clip_slots ' + clips[i].id + ' clip';
+                            ClipID.push(clips[i].id);
+                            Promises.push(Promise.all([
+                                this.getMaxData('get', clipPath, 'name'),
+                                this.getMaxData('get', clipPath, 'color'),
+                                this.getMaxData('get', clipPath, 'is_audio_clip'),
+                                this.getMaxData('get', clipPath, 'is_midi_clip')
+                            ]));
+                        }
+                    }
+
+                    Promise.all(Promises).then((clips) => {
+                        let result = [ ];
+                        for(let i in ClipID) {
+                            result.push({
+                                id: ClipID[i],
+                                clip: {
+                                    name: clips[i][0],
+                                    color: clips[i][1],
+                                    is_audio_clip: clips[i][2],
+                                    is_midi_clip: clips[i][3]
+                                }
+                            });
+                        }
+
+                        resolve(result);
+                    });
+                });
+            });
+    }
+
+    /**
      * Returns list of devices for track
      * @param track
      * @returns {Promise.<TResult>}
