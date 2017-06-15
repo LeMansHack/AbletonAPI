@@ -189,6 +189,22 @@ class AbletonAPI {
     }
 
     /**
+     * Fire a single clip given by track and clip slot
+     * @param track
+     * @param clipSlot
+     */
+    playClip(track, clipSlot) {
+        let path = 'live_set tracks ' + track;
+        if(track === 'master_track') {
+            path = 'live_set master_track';
+        }
+
+        path += ' clip_slots ' + clipSlot + ' clip';
+        console.log(path);
+        this.fireMaxData(path);
+    }
+
+    /**
      * Returns list of devices for track
      * @param track
      * @returns {Promise.<TResult>}
